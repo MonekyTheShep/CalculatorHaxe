@@ -3,7 +3,9 @@ package;
 import flixel.FlxState;
 // import flixel.ui.FlxButton;
 import flixel.addons.ui.FlxInputText;
-import flixel.addons.ui.FlxButtonPlus;
+// import flixel.addons.ui.FlxButtonPlus;
+import flixel.util.FlxColor;
+import flixel.addons.ui.FlxUIButton;
 import flixel.group.FlxGroup;
 import flixel.text.FlxText;
 import flixel.FlxG;
@@ -20,7 +22,7 @@ class PlayState extends FlxState
 
 	override public function create()
 	{
-		// ADD flxbitmap text
+		// ADD flxbitmap text 
 		super.create();
 		
 		var calc:Calculator;
@@ -53,9 +55,10 @@ class PlayState extends FlxState
 
 		add(inputField);
 
+				
 		// loop through array(calculatorUI) to create buttons
 		for (i in calculatorUI) {
-			var button = new FlxButtonPlus(0, 0, () -> {
+			var button = new FlxUIButton(0, 0, Std.string(i), () -> {
 			if (i == "C"){
 				inputField.text = "";
 			}
@@ -66,19 +69,21 @@ class PlayState extends FlxState
 			}
 			else {
 				inputField.text += Std.string(i);
-			}
-				
-			}, Std.string(i), 50, 50);
+			}});
+			// Resize buttons
+			button.resize(50, 50);
 				
 			// Align buttons in the grid
 			button.x = FlxG.width / 2 + 100 * ((buttonGroup.members.length % MAX_PER_ROW) - MAX_PER_ROW/2) + button.width /2;
 			button.y = Math.floor(buttonGroup.members.length / MAX_PER_ROW) * 100;
+			
+			// button.label.setFormat(null, 0, FlxColor.BLACK, "center");
 			// Center Text
-			button.textNormal.alignment = FlxTextAlign.CENTER;
-			button.textHighlight.alignment = FlxTextAlign.CENTER;
+			// button.textNormal.alignment = FlxTextAlign.CENTER;
+			// button.textHighlight.alignment = FlxTextAlign.CENTER;
 			// Vertical centering of text
-			button.textNormal.y = button.y + (button.height - button.textNormal.height) / 2;
-			button.textHighlight.y = button.y + (button.height - button.textHighlight.height) / 2;
+			// button.textNormal.y = button.y + (button.height - button.textNormal.height) / 2;
+			// button.textHighlight.y = button.y + (button.height - button.textHighlight.height) / 2;
 			// Add to group and state
 			buttonGroup.add(button);
 			add(button);
@@ -89,6 +94,7 @@ class PlayState extends FlxState
 
 
 	}
+
 
 
 	function calculations(expr:String):Dynamic {
