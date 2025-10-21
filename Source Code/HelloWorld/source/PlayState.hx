@@ -8,6 +8,7 @@ import flixel.group.FlxGroup;
 import flixel.text.FlxText;
 import flixel.FlxG;
 import hscript.Interp;
+import flixel.FlxSprite;
 
 import Calculator;
 
@@ -19,6 +20,7 @@ class PlayState extends FlxState
 
 	override public function create()
 	{
+		// ADD flxbitmap text
 		super.create();
 		
 		var calc:Calculator;
@@ -31,7 +33,24 @@ class PlayState extends FlxState
 		];
 			
 		// Input field
-		var inputField = new FlxInputText(100, 100, 200, "");
+		var inputField = new FlxInputText(0, 0, 400, "", 40);
+		
+		// Position input field
+		inputField.x = FlxG.width / 2 + 100 * ((buttonGroup.members.length % MAX_PER_ROW) - MAX_PER_ROW/2) + 0 /2;
+		inputField.y = Math.floor(buttonGroup.members.length / MAX_PER_ROW) * 100;
+		inputField.filterMode = FlxInputText.ONLY_NUMERIC;
+		buttonGroup.add(inputField);
+
+		// Empty objects for spacing
+		var emptyObject = new FlxSprite();
+		var emptyObject2 = new FlxSprite();
+		var emptyObject3 = new FlxSprite();
+
+		buttonGroup.add(emptyObject);
+		buttonGroup.add(emptyObject2);
+		buttonGroup.add(emptyObject3);
+
+
 		add(inputField);
 
 		// loop through array(calculatorUI) to create buttons
@@ -52,8 +71,8 @@ class PlayState extends FlxState
 			}, Std.string(i), 50, 50);
 				
 			// Align buttons in the grid
-			button.x = FlxG.width / 2 + 120 * ((buttonGroup.members.length % MAX_PER_ROW) - MAX_PER_ROW/2) + button.width /2;
-			button.y = Math.floor(buttonGroup.members.length / MAX_PER_ROW) * 120;
+			button.x = FlxG.width / 2 + 100 * ((buttonGroup.members.length % MAX_PER_ROW) - MAX_PER_ROW/2) + button.width /2;
+			button.y = Math.floor(buttonGroup.members.length / MAX_PER_ROW) * 100;
 			// Center Text
 			button.textNormal.alignment = FlxTextAlign.CENTER;
 			button.textHighlight.alignment = FlxTextAlign.CENTER;
@@ -70,7 +89,6 @@ class PlayState extends FlxState
 
 
 	}
-
 
 
 	function calculations(expr:String):Dynamic {
