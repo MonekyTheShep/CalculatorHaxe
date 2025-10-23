@@ -1,18 +1,18 @@
 package;
 
+import Calculator;
+import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.FlxState;
-// import flixel.ui.FlxButton;
-import flixel.addons.ui.FlxInputText;
 // import flixel.addons.ui.FlxButtonPlus;
-import flixel.util.FlxColor;
+import flixel.addons.ui.FlxInputText;
 import flixel.addons.ui.FlxUIButton;
 import flixel.group.FlxGroup;
 import flixel.text.FlxText;
-import flixel.FlxG;
+// import flixel.ui.FlxButton;
+import flixel.util.FlxColor;
 import hscript.Interp;
-import flixel.FlxSprite;
 
-import Calculator;
 
 class PlayState extends FlxState
 { 
@@ -22,6 +22,7 @@ class PlayState extends FlxState
 
 	override public function create()
 	{
+		//FlxG.scaleMode = new FillScaleMode();
 		// ADD flxbitmap text 
 		super.create();
 		
@@ -36,7 +37,8 @@ class PlayState extends FlxState
 			
 		// Input field
 		var inputField = new FlxInputText(0, 0, 400, "", 40);
-		
+		inputField.antialiasing = true;
+
 		// Position input field
 		inputField.x = FlxG.width / 2 + 100 * ((buttonGroup.members.length % MAX_PER_ROW) - MAX_PER_ROW/2) + 0 /2;
 		inputField.y = Math.floor(buttonGroup.members.length / MAX_PER_ROW) * 100;
@@ -72,6 +74,7 @@ class PlayState extends FlxState
 			}});
 			// Resize buttons
 			button.resize(50, 50);
+			button.antialiasing = true;
 				
 			// Align buttons in the grid
 			button.x = FlxG.width / 2 + 100 * ((buttonGroup.members.length % MAX_PER_ROW) - MAX_PER_ROW/2) + button.width /2;
