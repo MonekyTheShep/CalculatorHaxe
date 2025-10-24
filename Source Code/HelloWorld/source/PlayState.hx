@@ -8,12 +8,16 @@ import flixel.FlxState;
 import flixel.addons.ui.FlxInputText;
 import flixel.addons.ui.FlxUIButton;
 import flixel.group.FlxGroup;
+import flixel.system.scaleModes.PixelPerfectScaleMode;
 import flixel.text.FlxText;
 // import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
+import haxe.macro.Compiler.NullSafetyMode;
+import hscript.Expr;
 import hscript.Interp;
+import hscript.Parser;
 
-
+@:nullSafety
 class PlayState extends FlxState
 { 
 	// variables
@@ -22,7 +26,7 @@ class PlayState extends FlxState
 
 	override public function create()
 	{
-		//FlxG.scaleMode = new FillScaleMode();
+		FlxG.scaleMode = new PixelPerfectScaleMode();
 		// ADD flxbitmap text 
 		super.create();
 		
@@ -64,13 +68,26 @@ class PlayState extends FlxState
 			if (i == "C"){
 				inputField.text = "";
 			}
-			else if (i == "="){
-				var result = calculations(inputField.text);
-				trace("Result: " + result);
-				inputField.text = Std.string(result);
+				else if (i == "=")
+				{
+					var interp:Interp = new Interp();
+					var expr:Expr;
+					try
+					{
+						var parser = new hscript.Parser();
+						var expr = parser.parseString(inputField.text);
+						var output:Dynamic = interp.execute(expr);
+						inputField.text = Std.string(cast(output, Int));
+					}
+					catch (e:Dynamic)
+					{
+						trace("Error: " + e);
+						inputField.text = "Error";
+					}
+
 			}
 			else {
-				inputField.text += Std.string(i);
+					inputField.text += Std.string(i);
 			}});
 			// Resize buttons
 			button.resize(50, 50);
@@ -100,18 +117,6 @@ class PlayState extends FlxState
 
 
 
-	function calculations(expr:String):Dynamic {
-        var interp = new Interp();
-        try {
-			var parser = new hscript.Parser();
-			var ast = parser.parseString(expr);
-			var interp = new hscript.Interp();
-			return interp.execute(ast);
-        } catch (e:Dynamic) {
-            trace("Invalid calculation: " + expr);
-            return null;
-        }
-    }
 
 	override public function update(elapsed:Float)
 	{
